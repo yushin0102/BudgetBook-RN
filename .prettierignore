@@ -1,0 +1,14 @@
+.expo
+.vscode
+docs
+lib
+node_modules
+android
+ios
+tsconfig.json
+package.json
+*.jpg
+*.png
+.husky
+coverage
+vendor

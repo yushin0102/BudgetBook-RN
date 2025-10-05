@@ -1,0 +1,32 @@
+# OSX
+.DS_Store
+
+# Xcode
+build/
+*.ipa
+xcuserdata
+DerivedData
+.xcode.env.local
+
+# Android
+.idea
+.gradle
+local.properties
+*.iml
+
+
+# node.js
+node_modules
+package-lock.json
+
+# Bundle artifact
+*.jsbundle
+
+# Cocoapods
+/ios/Pods/
+
+# bundle
+vendor/
+
+# eslint
+.eslintcache
