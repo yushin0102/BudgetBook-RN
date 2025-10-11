@@ -14,6 +14,6 @@
     },
     "rootDirs": ["src"],
     "skipLibCheck": true,
-    "types": ["react-native", "jest", "styled-components-react-native", "node"]
+    "types": ["react-native", "jest", "node"]
   }
 }

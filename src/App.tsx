@@ -1,36 +1,29 @@
-// import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar, useColorScheme } from 'react-native';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider } from 'styled-components';
 
-function App() {
+import { MainNavigator } from '~/navigation/MainNavigator';
+
+import theme from './styles/theme';
+const NavigationContainerStack = () => {
     const isDarkMode = useColorScheme() === 'dark';
 
     return (
-        <SafeAreaProvider>
+        <NavigationContainer>
             <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-            <AppContent />
+            <MainNavigator />
+        </NavigationContainer>
+    );
+};
+function App() {
+    return (
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+            <ThemeProvider theme={theme}>
+                <NavigationContainerStack />
+            </ThemeProvider>
         </SafeAreaProvider>
     );
 }
-
-function AppContent() {
-    const safeAreaInsets = useSafeAreaInsets();
-
-    return (
-        <View style={styles.container}>
-            {/* <NewAppScreen templateFileName="App.tsx" safeAreaInsets={safeAreaInsets} /> */}
-            <Text style={{ color: 'white' }}>嘿嘿嘿上傳囉～</Text>
-        </View>
-    );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#82B1FF',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
 
 export default App;
