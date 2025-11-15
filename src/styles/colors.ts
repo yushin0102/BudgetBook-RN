@@ -1,3 +1,5 @@
+import { withAlpha } from '../utils/colorUtils';
+
 const main = {
     primary: '#FF8A80', // 馬卡龍粉紅
     secondary: '#82B1FF', // 柔藍
@@ -39,6 +41,26 @@ const black = {
     100: '#070707',
 };
 
+const blackOpacity = {
+    0: 'rgba(0, 0, 0,0)',
+    20: 'rgba(0, 0, 0,0.2)',
+    30: 'rgba(0, 0, 0,0.3)',
+    40: 'rgba(0, 0, 0,0.4)',
+    50: 'rgba(0, 0, 0,0.5)',
+    60: 'rgba(0, 0, 0,0.6)',
+    70: 'rgba(0, 0, 0,0.7)',
+    80: 'rgba(0, 0, 0,0.8)',
+    90: 'rgba(0, 0, 0,0.9)',
+};
+
+const transparentMain = {
+    primary: withAlpha(main.primary, 0.2), // primary 的透明度為 20%
+    secondary: withAlpha(main.secondary, 0.2), // secondary 的透明度為 0.2
+    accent: withAlpha(main.accent, 0.2), // accent 的透明度為 0.2
+    success: withAlpha(main.success, 0.2), // success 的透明度為 0.2
+    warning: withAlpha(main.warning, 0.2), // warning 的透明度為 0.2
+};
+
 export const colors = {
     white: '#FFFFFF',
     pure_black: '#000000',
@@ -47,4 +69,23 @@ export const colors = {
     black,
     error,
     gradients,
+    transparentMain,
+    blackOpacity,
 };
+
+// Tailwind css 參考如下:
+/**
+ mb-1 到 mb-6 的像素值
+mb-1: 4px
+mb-2: 8px
+mb-3: 12px
+mb-4: 16px
+mb-5: 20px
+mb-6: 24px
+h1 到 h5 的字體大小
+h1: 36px
+h2: 30px
+h3: 24px
+h4: 20px
+h5: 18px
+ */

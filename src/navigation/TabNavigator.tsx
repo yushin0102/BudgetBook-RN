@@ -37,7 +37,7 @@ export const TabNavigator = ({}: Props) => {
         } else {
             return {
                 paddingTop: 15,
-                height: 80,
+                height: 65,
             };
         }
     }, [isAndroid, safeAreaBottom]);
