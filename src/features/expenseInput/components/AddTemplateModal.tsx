@@ -3,6 +3,7 @@ import { Animated, Modal, TextInput as RNTextInput, TouchableWithoutFeedback, Vi
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styled, { useTheme } from 'styled-components/native';
 
+import { CATEGORIES } from '~/features/expenseInput/types/config';
 import { QuickTemplate, TemplateCategoryId } from '~/features/expenseInput/types/template';
 
 type Props = {
@@ -10,14 +11,6 @@ type Props = {
     onClose: () => void;
     onConfirm: (t: QuickTemplate) => void;
 };
-
-const CATEGORIES: { id: TemplateCategoryId; label: string; icon: string; color: string }[] = [
-    { id: 'food', label: '餐飲', icon: 'restaurant', color: '#FFE0B2' },
-    { id: 'transport', label: '交通', icon: 'directions-car', color: '#A5F1D6' },
-    { id: 'shopping', label: '購物', icon: 'shopping-bag', color: '#CBB8FF' },
-    { id: 'coffee', label: '咖啡', icon: 'coffee', color: '#FFCCBC' },
-    { id: 'other', label: '其他', icon: 'more-horiz', color: '#E0E0E0' },
-];
 
 const genId = () => `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 

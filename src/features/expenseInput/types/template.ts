@@ -2,13 +2,11 @@ export type TemplateCategoryId =
     | 'food'
     | 'transport'
     | 'shopping'
-    | 'coffee'
+    | 'saving'
     | 'other'
-    | 'income'
     | 'commute'
     | 'fitness'
-    | 'breakfast'
-    | 'afternoonTea';
+    | 'breakfast';
 
 export type QuickTemplate = {
     id: string;
