@@ -27,12 +27,18 @@ type Props = {
     onApplyTemplate: (tpl: QuickTemplate) => void;
     onTemplateAdded: (tpl: QuickTemplate) => void;
     onTemplateDeleted: (id: string) => void;
+    activeTemplateId: string | null;
 };
 
-export const QuickTemplates = ({ templates, onApplyTemplate, onTemplateAdded, onTemplateDeleted }: Props) => {
+export const QuickTemplates = ({
+    templates,
+    onApplyTemplate,
+    onTemplateAdded,
+    onTemplateDeleted,
+    activeTemplateId,
+}: Props) => {
     const [isAddTemplateOpen, setIsAddTemplateOpen] = useState(false);
     const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
-
     const handleConfirmTemplate = useCallback(
         (tpl: QuickTemplate) => {
             animateLayout();
@@ -52,7 +58,8 @@ export const QuickTemplates = ({ templates, onApplyTemplate, onTemplateAdded, on
                         <Chip
                             key={tpl.id}
                             activeOpacity={0.7}
-                            $bgColor={CATEGORY_STYLE[tpl.categoryId]?.bg}
+                            $active={activeTemplateId === tpl.id}
+                            $color={CATEGORY_STYLE[tpl.categoryId].chipBg}
                             onPress={() => {
                                 if (deleteTargetId) {
                                     // 若目前處於刪除目標選取狀態，點擊切換/關閉刪除目標
@@ -77,7 +84,10 @@ export const QuickTemplates = ({ templates, onApplyTemplate, onTemplateAdded, on
                                 </IconBadge>
                             )}
 
-                            <ChipText style={{ color: CATEGORY_STYLE[tpl.categoryId]?.text }}>
+                            <ChipText
+                                $color={CATEGORY_STYLE[tpl.categoryId].chipBg}
+                                $active={activeTemplateId === tpl.id}
+                            >
                                 {`${tpl.note} $${tpl.amount}`}
                             </ChipText>
                         </Chip>
@@ -110,7 +120,6 @@ const Container = styled.View`
 `;
 
 const ChipsWrap = styled.View`
-    margin-top: 8px;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
@@ -118,23 +127,25 @@ const ChipsWrap = styled.View`
     min-height: 100px;
 `;
 
-const Chip = styled.TouchableOpacity<{ $bgColor: string }>`
+const Chip = styled.TouchableOpacity<{
+    $active?: boolean;
+    $color: string;
+}>`
     width: 48%;
-    height: 48px;
+    height: 44px;
     border-radius: 999px;
     padding-horizontal: 14px;
     justify-content: center;
-    background-color: ${p => p.$bgColor};
-    shadow-color: #000;
-    shadow-opacity: 0.08;
-    shadow-radius: 8px;
-    shadow-offset: 0px 2px;
-    elevation: 2;
+    opacity: ${p => (p.$active ? 1 : 0.45)};
+    background-color: ${p => (p.$active ? p.$color : 'transparent')};
+    border-width: ${p => (p.$active ? '0px' : '1px')};
+    border-color: ${p => p.$color};
 `;
 
-const ChipText = styled.Text`
+const ChipText = styled.Text<{ $active?: boolean; $color: string }>`
     font-size: 14px;
     font-weight: 700;
+    color: ${p => (p.$active ? '#FFFFFF' : theme.colors.black[70])};
 `;
 
 const AddButton = styled.TouchableOpacity`
@@ -143,7 +154,7 @@ const AddButton = styled.TouchableOpacity`
     border-radius: 999px;
     border-width: 1.5px;
     border-style: dashed;
-    border-color: ${p => p.theme.colors.black[20]};
+    border-color: ${p => p.theme.colors.black[10]};
     flex-direction: row;
     align-items: center;
     justify-content: center;

@@ -52,13 +52,13 @@ export const ExpenseForm = ({ draft, onChangeDraft, onSubmit }: Props) => {
                         }}
                     />
                 </InputField>
-                <SubmitButton activeOpacity={0.8} onPress={onSubmit}>
-                    <MaterialIcons name="check" size={20} color="#C2C2C2" />
+                <SubmitButton $isFilled={!!draft.categoryId} activeOpacity={0.8} onPress={onSubmit}>
+                    <SubmitMaterialIconsButton name="check" size={20} $isFilled={!!draft.categoryId} />
                 </SubmitButton>
             </FormContainer>
 
             <FormContainer>
-                <InputField style={{ marginTop: 24 }}>
+                <InputField style={{ marginTop: 12 }}>
                     <RemarkInput
                         maxLength={15}
                         value={draft.note}
@@ -69,7 +69,7 @@ export const ExpenseForm = ({ draft, onChangeDraft, onSubmit }: Props) => {
                     />
                 </InputField>
             </FormContainer>
-            <View style={{ marginBottom: 8 }} />
+            <View style={{ marginBottom: 12 }} />
             <ButtonWrap onPress={() => setDateVisible(true)}>
                 <MaterialIcons name="calendar-today" size={16} color={theme.colors.black[70]} />
                 <DateInfoText>選擇日期：</DateInfoText>
@@ -110,7 +110,6 @@ const SectionTitleText = styled.Text`
 const SectionInfo = styled.Text`
     font-size: 14px;
     color: ${({ theme }) => theme.colors.black[60]};
-    margin-bottom: 18px;
 `;
 
 const LeftWrap = styled(View)``;
@@ -162,8 +161,8 @@ const InputContent = styled(TextInput)`
     color: ${({ theme }) => theme.colors.black[90]};
 `;
 
-const SubmitButton = styled(TouchableOpacity)`
-    background-color: ${({ theme }) => theme.colors.black[30]};
+const SubmitButton = styled(TouchableOpacity)<{ $isFilled: boolean }>`
+    background-color: ${({ theme, $isFilled }) => ($isFilled ? theme.colors.main.primary : theme.colors.black[10])};
     border-radius: 16px;
     padding-vertical: 14px;
     padding-horizontal: 6px;
@@ -171,6 +170,10 @@ const SubmitButton = styled(TouchableOpacity)`
     align-items: center;
     margin-left: 12px;
     margin-top: 12px;
+`;
+
+const SubmitMaterialIconsButton = styled(MaterialIcons)<{ $isFilled: boolean }>`
+    color: ${({ theme, $isFilled }) => ($isFilled ? theme.colors.white : theme.colors.black[40])};
 `;
 
 const RemarkInput = styled(TextInput)`

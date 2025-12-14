@@ -27,10 +27,15 @@ export const ExpenseCategorySelector: React.FC<Props> = ({ selectedCategoryId, o
                             key={cat.id}
                             activeOpacity={0.8}
                             onPress={() => handlePress(cat.id)}
-                            $bgColor={isActive ? cat.color : '#FFFFFF'}
+                            $accent={cat.color}
                             $isActive={isActive}
                         >
-                            <MaterialIcons name={cat.icon as any} size={32} color={isActive ? '#FFFFFF' : '#555555'} />
+                            {isActive && (
+                                <ActiveBadge $accent={cat.color}>
+                                    <MaterialIcons name="check" size={16} color="#FFFFFF" />
+                                </ActiveBadge>
+                            )}
+                            <MaterialIcons name={cat.icon as any} size={32} color={isActive ? cat.color : '#555555'} />
                             <Label $isActive={isActive}>{cat.label}</Label>
                         </CategoryButton>
                     );
@@ -53,23 +58,47 @@ const Grid = styled.View`
     gap: 16px;
 `;
 
-const CategoryButton = styled.TouchableOpacity<{ $bgColor: string; $isActive?: boolean }>`
+const CategoryButton = styled.TouchableOpacity<{ $accent: string; $isActive?: boolean }>`
     width: 30%;
     padding: 24px;
     border-radius: 16px;
-    background-color: ${p => p.$bgColor};
+
+    /* keep white card; highlight via border */
+    background-color: #ffffff;
+    border-width: ${p => (p.$isActive ? '2px' : '1px')};
+    border-color: ${p => (p.$isActive ? p.$accent : 'rgba(0,0,0,0.06)')};
+
     justify-content: center;
     align-items: center;
+
     shadow-color: #000;
-    shadow-opacity: 0.08;
+    shadow-opacity: 0.06;
     shadow-radius: 10px;
     shadow-offset: 0px 3px;
     elevation: 2;
+`;
+
+const ActiveBadge = styled.View<{ $accent: string }>`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+
+    background-color: ${p => p.$accent};
+    align-items: center;
+    justify-content: center;
+
+    /* tiny ring so it reads well on white */
+    border-width: 2px;
+    border-color: #ffffff;
 `;
 
 const Label = styled.Text<{ $isActive?: boolean }>`
     margin-top: 8px;
     font-size: 16px;
     font-weight: 500;
-    color: ${p => (p.$isActive ? '#FFFFFF' : '#333333')};
+    color: ${p => (p.$isActive ? p.theme.colors.black[80] : '#333333')};
 `;

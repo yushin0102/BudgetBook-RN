@@ -55,7 +55,7 @@ export const TabNavigator = ({}: Props) => {
             >
                 <Screen
                     name="TabExpenseInput"
-                    component={() => <ExpenseInputScreen />}
+                    component={ExpenseInputScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <TabBarItem $isAndroid={isAndroid}>
@@ -76,7 +76,7 @@ export const TabNavigator = ({}: Props) => {
                 />
                 <Screen
                     name="TabTransactions"
-                    component={() => <TransactionScreen />}
+                    component={TransactionScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <TabBarItem $isAndroid={isAndroid}>
@@ -97,7 +97,7 @@ export const TabNavigator = ({}: Props) => {
                 />
                 <Screen
                     name="TabAnalysis"
-                    component={() => <AnalysisScreen />}
+                    component={AnalysisScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <TabBarItem $isAndroid={isAndroid}>
@@ -118,7 +118,7 @@ export const TabNavigator = ({}: Props) => {
                 />
                 <Screen
                     name="TabSettings"
-                    component={() => <SettingScreen />}
+                    component={SettingScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <TabBarItem $isAndroid={isAndroid}>
@@ -157,6 +157,8 @@ const IconBadge = styled(LinearGradient).attrs({
     border-radius: 16px;
     align-items: center;
     justify-content: center;
+    background-color: #ffffff;
+    overflow: hidden;
 
     /* iOS 陰影 */
     shadow-color: rgba(0, 0, 0, 0.25);

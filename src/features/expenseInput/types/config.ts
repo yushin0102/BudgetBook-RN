@@ -94,15 +94,23 @@ export const CATEGORIES: { id: TemplateCategoryId; label: string; icon: string; 
 /**
  * QuickTemplates 等 Chip 風格用的 style 表
  */
-export const CATEGORY_STYLE: Record<TemplateCategoryId, { bg: string; text: string }> = CATEGORY_CONFIGS.reduce(
+export const CATEGORY_STYLE: Record<
+    TemplateCategoryId,
+    {
+        chipBg: string;
+        chipText: string;
+        outline: string; // 外框色（通常 = chipBg）
+    }
+> = CATEGORY_CONFIGS.reduce(
     (acc, cfg) => {
         acc[cfg.id] = {
-            bg: cfg.chipBg,
-            text: cfg.chipText,
+            chipBg: cfg.chipBg,
+            chipText: cfg.chipText,
+            outline: cfg.chipBg,
         };
         return acc;
     },
-    {} as Record<TemplateCategoryId, { bg: string; text: string }>,
+    {} as Record<TemplateCategoryId, any>,
 );
 
 /**

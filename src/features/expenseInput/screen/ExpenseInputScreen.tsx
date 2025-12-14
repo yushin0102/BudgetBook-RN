@@ -62,6 +62,7 @@ export const ExpenseInputScreen = () => {
                     templates={templates}
                     onTemplateAdded={addTemplate}
                     onTemplateDeleted={removeTemplate}
+                    activeTemplateId={draft.templateId}
                     onApplyTemplate={tpl => {
                         applyTemplate(tpl);
                         if (tpl.note !== undefined) {

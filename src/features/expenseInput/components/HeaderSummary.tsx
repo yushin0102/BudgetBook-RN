@@ -30,7 +30,7 @@ export const HeaderSummary = ({ activeTemplate, draft }: HeaderSummaryProps) => 
             <Container colors={['#FFE0CC', '#FFF6E5', '#E6F4FF']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
                 <LeftWrap>
                     <IconView $bg={meta.badgeBg}>
-                        <MaterialIcons name={meta.icon as any} size={28} color="#FFFFFF" />
+                        <MaterialIcons name={meta.icon as any} size={24} color="#FFFFFF" />
                     </IconView>
                     <TextWrap>
                         <CategoryTitle>{categoryTitle}</CategoryTitle>
@@ -56,8 +56,10 @@ const Container = styled(LinearGradient)`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background-color: #ffffff;
+    overflow: hidden;
     border-radius: 22px;
-    min-height: 110px;
+    min-height: 105px;
     /* iOS 陰影 */
     shadow-color: #000;
     shadow-opacity: 0.08;

@@ -30,6 +30,7 @@ const error = {
 
 const black = {
     0: '#FFFFFF',
+    10: '#F5F5F5',
     20: '#9E9E9E',
     30: '#EEEEEE',
     40: '#E0E0E0',
@@ -43,6 +44,7 @@ const black = {
 
 const blackOpacity = {
     0: 'rgba(0, 0, 0,0)',
+    10: 'rgba(0, 0, 0,0.1)',
     20: 'rgba(0, 0, 0,0.2)',
     30: 'rgba(0, 0, 0,0.3)',
     40: 'rgba(0, 0, 0,0.4)',
