@@ -58,7 +58,6 @@ export const CategoryBreakdownCard = ({
     summaries: CategorySummary[];
 }) => {
     const cfgMap = new Map(categories.map(c => [c.id, c]));
-    console.log('有什麼summaries', summaries);
     return (
         <Container contentContainerStyle={{ paddingBottom: 40 }}>
             <Title>{title}</Title>

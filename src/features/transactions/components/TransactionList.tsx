@@ -1,5 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components/native';
 
 import { TransactionCard } from '~/features/transactions/components/TransactionCard';
@@ -49,6 +49,13 @@ export const TransactionList = ({ items, onPressEdit, onPressDelete, onPressRest
         setLastDeleted(null);
     };
 
+    const renderItem = useCallback(
+        ({ item }: { item: Transaction }) => (
+            <TransactionCard tx={item} onPressEdit={onPressEdit} onPressDelete={() => handleDelete(item)} />
+        ),
+        [onPressEdit, handleDelete],
+    );
+
     useEffect(() => {
         if (!items.length) return;
         flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
@@ -71,9 +78,7 @@ export const TransactionList = ({ items, onPressEdit, onPressDelete, onPressRest
                 ref={instance => (flatListRef.current = instance as any)}
                 data={items}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => (
-                    <TransactionCard tx={item} onPressEdit={onPressEdit} onPressDelete={() => handleDelete(item)} />
-                )}
+                renderItem={renderItem}
                 contentContainerStyle={{ paddingBottom: 40, paddingHorizontal: 18 }}
             />
             <UndoDeleteBanner visible={undoVisible} deletedTitle={lastDeleted?.note || ''} onUndo={handleUndo} />

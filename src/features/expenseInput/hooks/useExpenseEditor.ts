@@ -19,7 +19,7 @@ type ExpenseDraftAction =
     | { type: 'APPLY_TEMPLATE'; template: QuickTemplate }
     | { type: 'RESET'; payload?: Partial<ExpenseDraft> };
 
-const createInitialDraft = (override?: Partial<ExpenseDraft>): ExpenseDraft => ({
+export const createInitialDraft = (override?: Partial<ExpenseDraft>): ExpenseDraft => ({
     mode: 'expense',
     amount: 0,
     note: '',
@@ -29,7 +29,7 @@ const createInitialDraft = (override?: Partial<ExpenseDraft>): ExpenseDraft => (
     ...override,
 });
 
-function expenseDraftReducer(state: ExpenseDraftState, action: ExpenseDraftAction): ExpenseDraftState {
+export function expenseDraftReducer(state: ExpenseDraftState, action: ExpenseDraftAction): ExpenseDraftState {
     switch (action.type) {
         case 'SET_MODE':
             return { ...state, draft: { ...state.draft, mode: action.value } };

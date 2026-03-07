@@ -15,7 +15,7 @@ type HeaderSummaryProps = {
 };
 
 export const HeaderSummary = ({ activeTemplate, draft }: HeaderSummaryProps) => {
-    const amountText = `${draft.mode ? '-' : ''}$${draft?.amount}`;
+    const amountText = `${draft.mode === 'expense' ? '-' : '+'}$${draft?.amount}`;
 
     const categoryId = (draft.categoryId as TemplateCategoryId) ?? 'other';
     const meta = CATEGORY_META[categoryId] ?? CATEGORY_META.other;

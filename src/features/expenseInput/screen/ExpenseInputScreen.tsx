@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -20,6 +20,16 @@ export const ExpenseInputScreen = () => {
     const activeTemplate = useMemo(
         () => templates.find(t => t.id === draft.templateId) ?? null,
         [templates, draft.templateId],
+    );
+
+    const handleChangeDraft = useCallback(
+        (patch: Partial<ExpenseDraft>) => {
+            if (patch.mode) setMode(patch.mode);
+            if (patch.amount !== undefined) setAmount(patch.amount);
+            if (patch.note !== undefined) setNote(patch.note);
+            if (patch.date) setDate(patch.date);
+        },
+        [setMode, setAmount, setNote, setDate],
     );
 
     const handleSave = () => {
@@ -45,18 +55,7 @@ export const ExpenseInputScreen = () => {
             <ScrollView>
                 {!!draft?.amount && <HeaderSummary draft={draft} activeTemplate={activeTemplate} />}
 
-                <ExpenseForm
-                    draft={draft}
-                    onChangeDraft={patch => {
-                        if (patch.mode) setMode(patch.mode);
-                        if (patch.amount !== undefined) setAmount(patch.amount);
-                        if (patch.note !== undefined) setNote(patch.note);
-                        if (patch.date) setDate(patch.date);
-
-                        // setShowHeaderSummary(true);
-                    }}
-                    onSubmit={handleSave}
-                />
+                <ExpenseForm draft={draft} onChangeDraft={handleChangeDraft} onSubmit={handleSave} />
 
                 <QuickTemplates
                     templates={templates}

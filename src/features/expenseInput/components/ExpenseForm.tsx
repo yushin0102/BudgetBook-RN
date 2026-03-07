@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
@@ -14,7 +14,7 @@ type Props = {
 };
 export const ExpenseForm = ({ draft, onChangeDraft, onSubmit }: Props) => {
     const [dateVisible, setDateVisible] = useState(false);
-    const todayISO = new Date().toISOString().split('T')[0];
+    const todayISO = useMemo(() => new Date().toISOString().split('T')[0], []);
     const displayDate = draft.date === todayISO ? '今天' : draft.date;
 
     const isExpense = draft.mode === 'expense';

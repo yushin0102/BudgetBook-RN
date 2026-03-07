@@ -13,7 +13,7 @@ type IProps = {
     onPressDelete: () => void;
 };
 
-export const TransactionCard = ({ tx, onPressEdit, onPressDelete }: IProps) => {
+export const TransactionCard = React.memo(({ tx, onPressEdit, onPressDelete }: IProps) => {
     const category = CATEGORY_MAP[tx.categoryId];
     const isExpense = tx.mode === 'expense';
     const iconName = isExpense ? 'remove' : 'add';
@@ -103,7 +103,7 @@ export const TransactionCard = ({ tx, onPressEdit, onPressDelete }: IProps) => {
             </RightSection>
         </CardContainer>
     );
-};
+});
 
 const CardContainer = styled.View`
     flex-direction: row;
