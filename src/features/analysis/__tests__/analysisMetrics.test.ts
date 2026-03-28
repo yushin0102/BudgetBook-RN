@@ -1,5 +1,6 @@
-import type { CategorySummary, DailyTotal, Transaction } from '~/features/analysis/types/analysis';
+import type { CategorySummary, DailyTotal } from '~/features/analysis/types/analysis';
 import { clamp01 } from '~/features/analysis/utils/formatters';
+import type Transaction from '~/features/transactions/types/transaction';
 
 // ---------- 提取自 useAnalysisMetrics 的純計算邏輯 ----------
 
@@ -37,11 +38,56 @@ function computeMaxDailyExpense(daily: DailyTotal[]): number {
 // ---------- Test Fixtures ----------
 
 const MOCK_TRANSACTIONS: Transaction[] = [
-    { id: 't1', mode: 'expense', amount: 85, note: '咖啡', dateISO: '2025-11-15', categoryId: 'food' },
-    { id: 't2', mode: 'expense', amount: 30, note: '捷運', dateISO: '2025-11-15', categoryId: 'transport' },
-    { id: 't3', mode: 'income', amount: 80000, note: '月薪', dateISO: '2025-11-10', categoryId: 'saving' },
-    { id: 't4', mode: 'expense', amount: 1200, note: '加值', dateISO: '2025-10-03', categoryId: 'transport' },
-    { id: 't5', mode: 'expense', amount: 2600, note: '日用品', dateISO: '2025-11-08', categoryId: 'shopping' },
+    {
+        id: 't1',
+        mode: 'expense',
+        amount: 85,
+        note: '咖啡',
+        dateISO: '2025-11-15',
+        categoryId: 'food',
+        userId: 'mock-user',
+        createdAt: 1700000000000,
+    },
+    {
+        id: 't2',
+        mode: 'expense',
+        amount: 30,
+        note: '捷運',
+        dateISO: '2025-11-15',
+        categoryId: 'commute',
+        userId: 'mock-user',
+        createdAt: 1700000000001,
+    },
+    {
+        id: 't3',
+        mode: 'income',
+        amount: 80000,
+        note: '月薪',
+        dateISO: '2025-11-10',
+        categoryId: 'saving',
+        userId: 'mock-user',
+        createdAt: 1700000000002,
+    },
+    {
+        id: 't4',
+        mode: 'expense',
+        amount: 1200,
+        note: '加值',
+        dateISO: '2025-10-03',
+        categoryId: 'commute',
+        userId: 'mock-user',
+        createdAt: 1700000000003,
+    },
+    {
+        id: 't5',
+        mode: 'expense',
+        amount: 2600,
+        note: '日用品',
+        dateISO: '2025-11-08',
+        categoryId: 'shopping',
+        userId: 'mock-user',
+        createdAt: 1700000000004,
+    },
 ];
 
 const MOCK_DAILY: DailyTotal[] = [
@@ -67,7 +113,16 @@ describe('Analysis Metrics Calculations', () => {
 
         it('should return 0 when no expenses exist', () => {
             const incomeOnly: Transaction[] = [
-                { id: 'i1', mode: 'income', amount: 5000, note: '', dateISO: '', categoryId: 'saving' },
+                {
+                    id: 'i1',
+                    mode: 'income',
+                    amount: 5000,
+                    note: '',
+                    dateISO: '',
+                    categoryId: 'saving',
+                    userId: 'mock-user',
+                    createdAt: 1700000000000,
+                },
             ];
             expect(computeTotalExpense(incomeOnly)).toBe(0);
         });
@@ -91,11 +146,11 @@ describe('Analysis Metrics Calculations', () => {
         it('should group expenses by category and sort by total desc', () => {
             const summaries = computeCategorySummaries(MOCK_TRANSACTIONS);
 
-            // shopping: 2600, transport: 1230, food: 85
+            // shopping: 2600, commute: 1230, food: 85
             expect(summaries[0].categoryId).toBe('shopping');
             expect(summaries[0].total).toBe(2600);
 
-            expect(summaries[1].categoryId).toBe('transport');
+            expect(summaries[1].categoryId).toBe('commute');
             expect(summaries[1].total).toBe(1230);
 
             expect(summaries[2].categoryId).toBe('food');

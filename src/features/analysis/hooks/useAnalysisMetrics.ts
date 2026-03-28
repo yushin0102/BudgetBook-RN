@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 
 import { clamp01 } from '~/features/analysis/utils/formatters';
+import type Transaction from '~/features/transactions/types/transaction';
 
-import type { CategoryConfig, CategorySummary, DailyTotal, Period, Transaction } from '../types/analysis';
+import type { CategoryConfig, CategorySummary, DailyTotal, Period } from '../types/analysis';
 
 export const useAnalysisMetrics = ({
     period,

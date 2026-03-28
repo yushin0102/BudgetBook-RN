@@ -4,10 +4,14 @@ import { TransactionFilterBar } from '~/features/transactions/components/Transac
 import { TransactionList } from '~/features/transactions/components/TransactionList';
 import { useTransactionFilters } from '~/features/transactions/hooks/useTransactionFilters';
 import { useTransactionListViewModel } from '~/features/transactions/hooks/useTransactionListViewModel';
-import { useTransactionsState } from '~/features/transactions/hooks/useTransactionsState';
+import { useTransactionStore } from '~/store/useTransactionStore';
+
 export const TransactionScreen = () => {
-    const { transactions, addTransaction, updateTransaction, removeTransaction, restoreTransaction } =
-        useTransactionsState();
+    const transactions = useTransactionStore(s => s.transactions);
+    const updateTransaction = useTransactionStore(s => s.updateTransaction);
+    const removeTransaction = useTransactionStore(s => s.removeTransaction);
+    const restoreTransaction = useTransactionStore(s => s.restoreTransaction);
+
     const { modeFilter, query, onChangeModeFilter, onChangeQuery } = useTransactionFilters();
     const { filteredTransactions } = useTransactionListViewModel({ transactions, modeFilter, query });
     return (

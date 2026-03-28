@@ -6,7 +6,7 @@ export default interface Transaction {
     mode: TransactionType; // 'expense' | 'income'
     amount: number; //
     note: string; // '星巴克咖啡'
-    date: string; //(YYYY-MM-DD)
+    dateISO: string; //(YYYY-MM-DD)
     categoryId: TemplateCategoryId; // 'food' | 'commute' | 'salary' ...
     templateId?: string | null; // 由哪個 QuickTemplate 建立，可選
     createdAt: number; // Date.now()

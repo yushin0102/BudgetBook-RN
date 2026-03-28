@@ -2,26 +2,17 @@ export type Period = 'week' | 'month';
 
 export type TxMode = 'expense' | 'income';
 
-export type CategoryId = 'food' | 'transport' | 'shopping' | 'saving' | 'other';
-
-export type Transaction = {
-    id: string;
-    mode: TxMode;
-    amount: number;
-    note: string;
-    dateISO: string; // YYYY-MM-DD
-    categoryId: CategoryId;
-};
+import type { TemplateCategoryId } from '~/features/expenseInput/types/template';
 
 export type CategoryConfig = {
-    id: CategoryId;
+    id: TemplateCategoryId;
     label: string;
     color: string; // 用於 dot/bar
     icon: string; // MaterialIcons name
 };
 
 export type CategorySummary = {
-    categoryId: CategoryId;
+    categoryId: TemplateCategoryId;
     total: number;
     ratio: number; // 0~1
 };
@@ -32,7 +23,7 @@ export type DailyTotal = {
     incomeTotal: number;
 };
 export type CategoryBudgetProgress = {
-    categoryId: CategoryId;
+    categoryId: TemplateCategoryId;
     label: string;
     spent: number;
     total: number;

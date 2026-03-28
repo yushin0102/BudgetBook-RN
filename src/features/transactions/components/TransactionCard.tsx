@@ -58,7 +58,7 @@ export const TransactionCard = React.memo(({ tx, onPressEdit, onPressDelete }: I
 
                     <DateRow>
                         <MaterialIcons name="calendar-today" size={16} color="#B0B0B0" />
-                        <DateText>{formatDateLabel(tx.date)}</DateText>
+                        <DateText>{formatDateLabel(tx.dateISO)}</DateText>
                     </DateRow>
                 </TextBlock>
             </LeftSection>

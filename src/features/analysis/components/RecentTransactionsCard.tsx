@@ -2,7 +2,9 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
 
-import type { CategoryConfig, Transaction } from '../types/analysis';
+import type Transaction from '~/features/transactions/types/transaction';
+
+import type { CategoryConfig } from '../types/analysis';
 import { formatCurrency } from '../utils/formatters';
 
 export const RecentTransactionsCard = ({

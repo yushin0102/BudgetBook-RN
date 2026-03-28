@@ -1,13 +1,20 @@
-import React, { useMemo, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styled, { useTheme } from 'styled-components/native';
 
-export const SettingScreen = ({ onPressEditCategoryBudgets }: { onPressEditCategoryBudgets?: () => void }) => {
+import { BudgetEditModal } from '~/features/settings/components/BudgetEditModal';
+import { useBudgetStore } from '~/store/useBudgetStore';
+
+export const SettingScreen = () => {
     const theme = useTheme();
 
-    const [monthlyBudget, setMonthlyBudget] = useState('30000');
-    const [dailyLimit, setDailyLimit] = useState('1000');
+    // ─── 從 Zustand store 讀取 ───
+    const monthlyTotalBudget = useBudgetStore(s => s.monthlyTotalBudget);
+    const dailySpendingLimit = useBudgetStore(s => s.dailySpendingLimit);
+
+    // ─── Modal 控制 ───
+    const [modalVisible, setModalVisible] = useState(false);
 
     return (
         <Wrap>
@@ -17,38 +24,29 @@ export const SettingScreen = ({ onPressEditCategoryBudgets }: { onPressEditCateg
                         <HeaderIconWrap>
                             <MaterialIcons name="attach-money" size={20} color={theme.colors.main.primary} />
                         </HeaderIconWrap>
-                        <HeaderTitle>預算設定</HeaderTitle>
+                        <HeaderTitle>當前預算設定</HeaderTitle>
                     </HeaderLeft>
                 </CardHeader>
 
                 <Row>
-                    <RowLabel>月度預算</RowLabel>
-                    <NumberInputWrap>
-                        <NumberInput
-                            value={monthlyBudget}
-                            onChangeText={setMonthlyBudget}
-                            placeholder="0"
-                            keyboardType="number-pad"
-                        />
-                    </NumberInputWrap>
+                    <RowLabel>總預算</RowLabel>
+                    <DisplayNumberWrap>
+                        <DisplayNumber>${monthlyTotalBudget.toLocaleString()}</DisplayNumber>
+                    </DisplayNumberWrap>
                 </Row>
 
                 <Row>
-                    <RowLabel>每日消費限制</RowLabel>
-                    <NumberInputWrap>
-                        <NumberInput
-                            value={dailyLimit}
-                            onChangeText={setDailyLimit}
-                            placeholder="0"
-                            keyboardType="number-pad"
-                        />
-                    </NumberInputWrap>
+                    <RowLabel>每日限制</RowLabel>
+                    <DisplayNumberWrap>
+                        <DisplayNumber>${dailySpendingLimit.toLocaleString()}</DisplayNumber>
+                    </DisplayNumberWrap>
                 </Row>
+
                 <EditWrap>
-                    <EditButtonText>編輯分類預算</EditButtonText>
-                    <EditButton onPress={onPressEditCategoryBudgets} activeOpacity={0.85}>
+                    <EditButtonText>自訂預算與分類上限</EditButtonText>
+                    <EditButton onPress={() => setModalVisible(true)} activeOpacity={0.85}>
                         <View style={{ flex: 1 }} />
-                        <MaterialIcons name="account-balance-wallet" size={20} color={theme.colors.secondary.coral} />
+                        <MaterialIcons name="tune" size={20} color={theme.colors.secondary.coral} />
                         <MaterialIcons
                             name="chevron-right"
                             size={24}
@@ -60,9 +58,14 @@ export const SettingScreen = ({ onPressEditCategoryBudgets }: { onPressEditCateg
             </Card>
 
             <Spacer />
+
+            {/* ── 全方位預算設定 Modal ── */}
+            <BudgetEditModal visible={modalVisible} onClose={() => setModalVisible(false)} />
         </Wrap>
     );
 };
+
+// ─── Styled Components ───
 
 const Wrap = styled.View`
     padding: 18px;
@@ -121,21 +124,16 @@ const RowLabel = styled.Text`
     color: ${({ theme }) => theme.colors.black[80]};
 `;
 
-const NumberInputWrap = styled.View`
-    width: 120px;
-    height: 44px;
-    border-radius: 22px;
-    border-width: 1px;
-    border-color: rgba(0, 0, 0, 0.18);
-    padding-horizontal: 14px;
+const DisplayNumberWrap = styled.View`
+    height: 40px;
     justify-content: center;
-    background-color: ${({ theme }) => theme.colors.white};
+    padding-horizontal: 8px;
 `;
 
-const NumberInput = styled(TextInput)`
+const DisplayNumber = styled.Text`
     font-size: 18px;
     font-weight: 900;
-    color: ${({ theme }) => theme.colors.black[85]};
+    color: ${({ theme }) => theme.colors.black[60]};
     text-align: right;
 `;
 
@@ -143,6 +141,7 @@ const EditWrap = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-top: 8px;
 `;
 
 const EditButton = styled.TouchableOpacity`

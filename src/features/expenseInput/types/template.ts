@@ -1,12 +1,4 @@
-export type TemplateCategoryId =
-    | 'food'
-    | 'transport'
-    | 'shopping'
-    | 'saving'
-    | 'other'
-    | 'commute'
-    | 'fitness'
-    | 'breakfast';
+export type TemplateCategoryId = 'food' | 'commute' | 'shopping' | 'saving' | 'other' | 'fitness' | 'breakfast';
 
 export type QuickTemplate = {
     id: string;
