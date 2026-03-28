@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled, { useTheme } from 'styled-components/native';
 
 import { CommonProgressBar } from '~/features/analysis/components/CommonProgressBar';
 import { useProgressBar } from '~/features/analysis/hooks/useProgressBar';
 import type { CategoryBudgetProgress, CategoryConfig, CategorySummary } from '~/features/analysis/types/analysis';
+import { useBudgetStore } from '~/store/useBudgetStore';
 
+/**
+ * 單一分類預算卡片
+ * 根據 spent/total 比例動態顯示 progress bar 與超支警示
+ */
 const BudgetCard = ({ label, spent, total, themeColor }: CategoryBudgetProgress) => {
     const theme = useTheme();
     const { status, widthInterpolation } = useProgressBar({ spent, total });
-    const isOver = spent > total;
-    const overAmount = isOver ? spent - total : 0; // 計算超支金額
+    const isOver = spent >= total;
+    const overAmount = isOver ? spent - total : 0;
 
     return (
         <CardContainer style={isOver ? { borderWidth: 1, borderColor: theme.colors.error.alert } : null}>
@@ -41,13 +46,13 @@ const BudgetCard = ({ label, spent, total, themeColor }: CategoryBudgetProgress)
     );
 };
 
-const MOCK_DATA: CategoryBudgetProgress[] = [
-    { categoryId: 'food', label: '餐飲', spent: 2400, total: 3000, themeColor: '#FFE0B2' },
-    { categoryId: 'transport', label: '交通', spent: 900, total: 1000, themeColor: '#90CAF9' },
-    { categoryId: 'shopping', label: '購物', spent: 3900, total: 3000, themeColor: '#EF9A9A' }, // 100% 測試
-    { categoryId: 'other', label: '其他', spent: 0, total: 1000, themeColor: '#CE93D8' }, // 0% 測試
-];
-
+/**
+ * 分類預算狀態總覽
+ *
+ * 從 Zustand store 讀取各分類預算上限，
+ * 從 props summaries 取得各分類的實際支出，
+ * 動態計算 progress 並顯示超支警示（紅色邊框 + 文字）
+ */
 export const CategoryBreakdownCard = ({
     title,
     categories,
@@ -57,16 +62,39 @@ export const CategoryBreakdownCard = ({
     categories: CategoryConfig[];
     summaries: CategorySummary[];
 }) => {
-    const cfgMap = new Map(categories.map(c => [c.id, c]));
+    const categoryBudgets = useBudgetStore(s => s.categoryBudgets);
+
+    // 將 summaries 轉為 Map 方便查表
+    const summaryMap = useMemo(() => {
+        const map = new Map<string, number>();
+        for (const s of summaries) {
+            map.set(s.categoryId, s.total);
+        }
+        return map;
+    }, [summaries]);
+
+    // 動態建立每個分類的 BudgetProgress 資料
+    const budgetItems: CategoryBudgetProgress[] = useMemo(() => {
+        return categories.map(cat => ({
+            categoryId: cat.id,
+            label: cat.label,
+            spent: summaryMap.get(cat.id) ?? 0,
+            total: categoryBudgets[cat.id] ?? 0,
+            themeColor: cat.color,
+        }));
+    }, [categories, summaryMap, categoryBudgets]);
+
     return (
         <Container contentContainerStyle={{ paddingBottom: 40 }}>
             <Title>{title}</Title>
-            {MOCK_DATA.map(item => (
+            {budgetItems.map(item => (
                 <BudgetCard key={item.categoryId} {...item} />
             ))}
         </Container>
     );
 };
+
+// ─── Styled Components ───
 
 const Container = styled.ScrollView`
     flex: 1;
@@ -102,13 +130,11 @@ const HeaderRow = styled.View`
     margin-bottom: 12px;
 `;
 
-// 左側標籤區
 const LabelBox = styled.View`
     flex-direction: row;
     align-items: center;
 `;
 
-// 顏色圓點
 const ColorDot = styled.View<{ color: string }>`
     width: 24px;
     height: 24px;
@@ -123,7 +149,6 @@ const LabelText = styled.Text`
     color: ${({ theme }) => theme.colors.black[80]};
 `;
 
-// 右側金額區
 const AmountBox = styled.View`
     align-items: flex-end;
 `;
@@ -133,6 +158,7 @@ const AmountText = styled.Text`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.black[80]};
 `;
+
 const StatusLabel = styled.Text<{ isOver: boolean }>`
     font-size: 12px;
     font-weight: bold;
@@ -140,7 +166,6 @@ const StatusLabel = styled.Text<{ isOver: boolean }>`
     margin-top: 4px;
 `;
 
-// 進度條軌道 (灰色背景)
 const ProgressBarTrack = styled.View`
     height: 12px;
     background-color: ${({ theme }) => theme.colors.black[10]};
@@ -149,7 +174,6 @@ const ProgressBarTrack = styled.View`
     position: relative;
 `;
 
-// 底部百分比標示
 const FooterLabels = styled.View`
     flex-direction: row;
     justify-content: space-between;

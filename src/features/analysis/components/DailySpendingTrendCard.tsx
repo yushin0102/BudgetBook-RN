@@ -3,28 +3,36 @@ import styled from 'styled-components/native';
 
 import { CommonProgressBar } from '~/features/analysis/components/CommonProgressBar';
 import { useProgressBar } from '~/features/analysis/hooks/useProgressBar';
+import { useBudgetStore } from '~/store/useBudgetStore';
 import theme from '~/styles/theme';
-interface DailyTrendProps {
-    currentAverageSpent: number; // 今日平均
-    idealAverageTotal: number; // 理想日均
+
+interface Props {
+    currentAverageSpent: number; // 實際的今日/日均總額
 }
 
-export const DailyTrendCard = ({ currentAverageSpent, idealAverageTotal }: DailyTrendProps) => {
+export const DailySpendingTrendCard = ({ currentAverageSpent }: Props) => {
+    const idealAverageTotal = useBudgetStore(s => s.dailySpendingLimit);
+
     const { status, widthInterpolation } = useProgressBar({ spent: currentAverageSpent, total: idealAverageTotal });
     const percentage = Math.round(idealAverageTotal > 0 ? (currentAverageSpent / idealAverageTotal) * 100 : 0);
 
+    const isOver = currentAverageSpent > idealAverageTotal;
+    const alertColor = theme.colors.error.alert;
+
     return (
-        <CardContainer>
+        <CardContainer style={isOver ? { borderWidth: 1, borderColor: alertColor } : null}>
             <Title>每日消費趨勢</Title>
 
             <StatsRow>
                 <InfoBox style={{ marginLeft: 0 }}>
-                    <InfoLabel>今日平均</InfoLabel>
-                    <InfoValue color={theme.colors.secondary.mint}>${currentAverageSpent}</InfoValue>
+                    <InfoLabel style={isOver ? { color: alertColor, fontWeight: 'bold' } : null}>實際日均</InfoLabel>
+                    <InfoValue color={isOver ? alertColor : theme.colors.secondary.mint}>
+                        ${currentAverageSpent}
+                    </InfoValue>
                 </InfoBox>
 
                 <InfoBox style={{ marginRight: 0 }}>
-                    <InfoLabel>理想日均</InfoLabel>
+                    <InfoLabel>理想限額</InfoLabel>
                     <InfoValue color={theme.colors.secondary.coral}>${idealAverageTotal}</InfoValue>
                 </InfoBox>
             </StatsRow>
@@ -33,13 +41,10 @@ export const DailyTrendCard = ({ currentAverageSpent, idealAverageTotal }: Daily
                 <PercentageText>{percentage}%</PercentageText>
                 <CommonProgressBar status={status} widthInterpolation={widthInterpolation} height={28} />
             </ProgressTrack>
+            {isOver && <OverWarningText>⚠️ 每日花費已超過設定限額！</OverWarningText>}
         </CardContainer>
     );
 };
-
-export function DailySpendingTrendCard() {
-    return <DailyTrendCard currentAverageSpent={500} idealAverageTotal={900} />;
-}
 
 const CardContainer = styled.View`
     background-color: ${({ theme }) => theme.colors.white};
@@ -102,4 +107,12 @@ const PercentageText = styled.Text`
     font-weight: bold;
     color: #ffffff;
     z-index: 1;
+`;
+
+const OverWarningText = styled.Text`
+    font-size: 13px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.error.alert};
+    margin-top: 14px;
+    text-align: center;
 `;
