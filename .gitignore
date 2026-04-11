@@ -13,6 +13,10 @@ DerivedData
 .gradle
 local.properties
 *.iml
+**/app/.cxx/
+**/app/build/
+*.keystore
+!debug.keystore
 
 
 # node.js

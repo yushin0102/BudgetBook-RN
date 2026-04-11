@@ -7,6 +7,7 @@ import AddTemplateModal from '~/features/expenseInput/components/AddTemplateModa
 import SectionTitle from '~/features/expenseInput/components/SectionTitle';
 import { CATEGORY_STYLE } from '~/features/expenseInput/types/config';
 import { QuickTemplate } from '~/features/expenseInput/types/template';
+import { useUIStore } from '~/store/useUIStore';
 import theme from '~/styles/theme';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -44,6 +45,7 @@ export const QuickTemplates = ({
             animateLayout();
             onTemplateAdded(tpl);
             setIsAddTemplateOpen(false);
+            useUIStore.getState().showToast('範本已新增', 'success');
         },
         [onTemplateAdded],
     );

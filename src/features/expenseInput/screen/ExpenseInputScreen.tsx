@@ -12,6 +12,7 @@ import { MOCK_TEMPLATES } from '~/features/expenseInput/types/config';
 import type ExpenseDraft from '~/features/expenseInput/types/template';
 import { todayISO } from '~/features/expenseInput/utils';
 import { useTransactionStore } from '~/store/useTransactionStore';
+import { useUIStore } from '~/store/useUIStore';
 
 export const ExpenseInputScreen = () => {
     const { templates, addTemplate, removeTemplate } = useQuickTemplates(MOCK_TEMPLATES);
@@ -36,7 +37,7 @@ export const ExpenseInputScreen = () => {
 
     const handleSave = () => {
         if (!draft.categoryId) {
-            // showToast('請先選擇支出類別');
+            useUIStore.getState().showToast('請先選擇支出類別', 'error');
             return;
         }
         console.log('🔥payload最終要傳出去的api參數', draft);
@@ -47,6 +48,7 @@ export const ExpenseInputScreen = () => {
             dateISO: draft.date ?? todayISO?.() ?? new Date().toISOString().split('T')[0],
             categoryId: draft.categoryId as any,
         });
+        useUIStore.getState().showToast('已成功儲存！', 'success');
 
         resetDraft(); // 送出後清空
     };

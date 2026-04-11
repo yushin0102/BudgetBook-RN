@@ -3,6 +3,7 @@ import { StatusBar, useColorScheme } from 'react-native';
 import { initialWindowMetrics, SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components';
 
+import { CommonToast } from '~/components/CommonToast';
 import { MainNavigator } from '~/navigation/MainNavigator';
 
 import theme from './styles/theme';
@@ -22,6 +23,7 @@ function App() {
             <SafeAreaView style={{ flex: 1 }}>
                 <ThemeProvider theme={theme}>
                     <NavigationContainerStack />
+                    <CommonToast />
                 </ThemeProvider>
             </SafeAreaView>
         </SafeAreaProvider>

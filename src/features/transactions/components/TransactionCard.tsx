@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import { CATEGORY_MAP } from '~/features/expenseInput/types/config';
 import { formatDateLabel } from '~/features/expenseInput/utils';
 import type Transaction from '~/features/transactions/types/transaction';
+import { useUIStore } from '~/store/useUIStore';
 
 type IProps = {
     tx: Transaction;
@@ -31,6 +32,9 @@ export const TransactionCard = React.memo(({ tx, onPressEdit, onPressDelete }: I
         if (!Number.isNaN(next)) {
             onPressEdit(tx.id, next);
             setShowInput(false);
+            if (tx.amount !== next) {
+                useUIStore.getState().showToast('已成功更新！', 'success');
+            }
         }
     };
 

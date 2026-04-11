@@ -26,7 +26,7 @@ export const TabNavigator = ({}: Props) => {
     const tabBarStyle = useMemo(() => {
         if (isAndroid) {
             return {
-                paddingTop: 35,
+                paddingTop: 25,
                 height: 65,
             };
         } else if (safeAreaBottom == 0) {

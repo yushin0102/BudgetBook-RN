@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 
 import { CATEGORY_CONFIGS } from '~/features/expenseInput/types/config';
 import { useBudgetStore } from '~/store/useBudgetStore';
+import { useUIStore } from '~/store/useUIStore';
 import theme from '~/styles/theme';
 
 type Props = {
@@ -59,8 +60,17 @@ export const BudgetEditModal = ({ visible, onClose }: Props) => {
         }
         batchUpdateCategoryBudgets(cats);
 
+        useUIStore.getState().showToast('已成功儲存預算設定！', 'success');
         onClose();
-    }, [draftMonthly, draftDaily, draftCategory, updateTotalBudget, updateDailyLimit, batchUpdateCategoryBudgets, onClose]);
+    }, [
+        draftMonthly,
+        draftDaily,
+        draftCategory,
+        updateTotalBudget,
+        updateDailyLimit,
+        batchUpdateCategoryBudgets,
+        onClose,
+    ]);
 
     const handleReset = useCallback(() => {
         resetToDefault();
@@ -85,7 +95,7 @@ export const BudgetEditModal = ({ visible, onClose }: Props) => {
                         <BodyScrollView showsVerticalScrollIndicator={false}>
                             {/* ── Global Limits ── */}
                             <SectionTitle>整體預算</SectionTitle>
-                            
+
                             <GlobalRow>
                                 <GlobalLeft>
                                     <MaterialIcons name="calendar-month" size={24} color={theme.colors.main.primary} />
@@ -179,7 +189,6 @@ export const BudgetEditModal = ({ visible, onClose }: Props) => {
     );
 };
 
-
 const Backdrop = styled.View`
     flex: 1;
     background-color: rgba(0, 0, 0, 0.45);
@@ -205,7 +214,7 @@ const Sheet = styled.View`
     shadow-opacity: 0.12;
     shadow-radius: 20px;
     shadow-offset: 0px -4px;
-    elevation: 10;
+    elevation: 6;
 `;
 
 const HandleBar = styled.View`
@@ -362,7 +371,6 @@ const SaveButton = styled(LinearGradient)`
     border-radius: 20px;
     margin-bottom: 12px;
     min-height: 48px;
-
 `;
 
 const SaveText = styled.Text`
