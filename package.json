@@ -12,7 +12,9 @@
     "type-check:watch": "tsc --watch",
     "type-check:all": "tsc",
     "clean": "\\rm -fr ./node_modules && \\rm -fr dist/* && \\rm -fr ios/build ios/Pods && \\rm -fr android/build android/app/build",
-    "test": "jest"
+    "test": "jest",
+    "build:android": "cd android && ./gradlew clean && ./gradlew bundleRelease && cd ..",
+    "clean:android": "cd android && ./gradlew clean && cd .."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -53,6 +55,7 @@
     "@types/react-native-vector-icons": "^6.4.18",
     "@types/react-test-renderer": "^19.1.0",
     "babel-plugin-module-resolver": "^5.0.3",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^10.0.3",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.5",

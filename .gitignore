@@ -17,6 +17,9 @@ local.properties
 **/app/build/
 *.keystore
 !debug.keystore
+# Keystore secrets
+*.keystore
+keystore.properties
 
 
 # node.js
